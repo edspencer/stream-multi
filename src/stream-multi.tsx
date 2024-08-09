@@ -41,8 +41,7 @@ export type StreamMultiParams<TOOLS extends Record<string, CoreTool>> = StreamTe
   textComponent?: (params: TextComponentParams) => ReactNode;
 };
 
-// It's necessary to define the type manually here, otherwise TypeScript compiler
-// will not be able to infer the correct return type as it's circular.
+//this isn't exported by Vercel AI SDK unfortunately, so we have to inline it here
 type StreamableUIWrapper = {
   /**
    * The value of the streamable UI. This can be returned from a Server Action and received by the client.
