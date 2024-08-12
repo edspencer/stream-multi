@@ -8,7 +8,7 @@ In streamMulti, blocks of text and tools are called Segments. If the LLM just re
 
 ## Demo
 
-![Demo](./demo.gif)
+![Demo](https://raw.githubusercontent.com/edspencer/stream-multi/main/demo.gif)
 
 This video shows the LLM responding with both streaming text and tool calls. The streaming text elements are shown with a blue border; the tool calls are shown with a red border. The LLM is able to send both types back in the same response. The LLM may send back any number of text and/or tool blocks using ai-stream-multi.
 
