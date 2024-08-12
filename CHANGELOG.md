@@ -1,5 +1,11 @@
 # ai-stream-multi
 
+## 0.2.1
+
+### Patch Changes
+
+- d6d66ed: Better README
+
 ## 0.2.0
 
 ### Minor Changes
