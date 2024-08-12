@@ -1,5 +1,11 @@
 # ai-stream-multi
 
+## 0.2.2
+
+### Patch Changes
+
+- f9f1ab8: Fix demo gif
+
 ## 0.2.1
 
 ### Patch Changes
