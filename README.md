@@ -6,6 +6,12 @@ When function-calling capable LLMs like the newer OpenAI ChatGPT versions are ex
 
 In streamMulti, blocks of text and tools are called Segments. If the LLM just returns text, there will be just one Segment generated. If the LLM returns text plus 2 tool invocations, `streamMulti` will create 3 segments - one for the text and one each for the tools.
 
+## Demo
+
+![Demo](./demo.gif)
+
+This video shows the LLM responding with both streaming text and tool calls. The streaming text elements are shown with a blue border; the tool calls are shown with a red border. The LLM is able to send both types back in the same response. The LLM may send back any number of text and/or tool blocks using ai-stream-multi.
+
 ## Usage
 
 The call to streamMulti accepts all of the same arguments as [streamText](https://sdk.vercel.ai/docs/ai-sdk-core/generating-text#streamtext) does, plus `onSegment`, `initial`, `textComponent` and `toolComponent`:
@@ -19,6 +25,12 @@ The call to streamMulti accepts all of the same arguments as [streamText](https:
 
 Aside from the 3 new props listed above, `steamMulti` also supports a `generate` function on each tool definition (see example). This functions exactly the same way as it does in Vercel AI SDK's [streamUI](https://sdk.vercel.ai/docs/ai-sdk-rsc/streaming-react-components#using-streamui-with-nextjs) function, again easing future migration.
 
+## Installation
+
+```
+npm install ai-stream-multi
+```
+
 ## Example
 
 90% of this code example is creating the Vercel AI setup. This example exports a function called submitUserMessage, which takes a new message from the user and passes it along with the prior conversation and other configuration to streamMulti.
@@ -30,12 +42,12 @@ The main thing to look at here is the `onSegment` call - this updates the Vercel
 
 import { createAI, getMutableAIState } from "ai/rsc";
 import { openai } from "@ai-sdk/openai";
-import { streamMulti } from "ai-stream-multi";
 import { Spinner } from "@/components/spinner";
 import { MyComponent } from "@/components/MyComponent";
 import { z } from "zod";
-
 import { CoreMessage, generateId } from "ai";
+
+import { streamMulti } from "ai-stream-multi";
 
 export async function submitUserMessage(message: ClientMessage) {
   "use server";
