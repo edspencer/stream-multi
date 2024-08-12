@@ -1,5 +1,5 @@
 {
-  "name": "ai-stream-multi",
+  "name": "stream-multi",
   "version": "0.1.2",
   "description": "Allows you to stream multiple chunks of text and tool calls using Vercel AI SDK",
   "main": "dist/index.js",
