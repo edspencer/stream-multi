@@ -6,11 +6,14 @@ When function-calling capable LLMs like the newer OpenAI ChatGPT versions are ex
 
 In streamMulti, blocks of text and tools are called Segments. If the LLM just returns text, there will be just one Segment generated. If the LLM returns text plus 2 tool invocations, `streamMulti` will create 3 segments - one for the text and one each for the tools.
 
-The call to streamMulti accepts all of the same arguments as [streamText](https://sdk.vercel.ai/docs/ai-sdk-core/generating-text#streamtext) does, plus `onSegment`, `initial` and `textComponent`:
+## Usage
+
+The call to streamMulti accepts all of the same arguments as [streamText](https://sdk.vercel.ai/docs/ai-sdk-core/generating-text#streamtext) does, plus `onSegment`, `initial`, `textComponent` and `toolComponent`:
 
 - **onSegment**: Called each time a Segment is completed. For text segments, this is called as soon as the LLM transitions from sending text to sending tool calls.
 - **initial**: React component (usually a spinner) that will be rendered until the LLM sends its first results back
 - **textComponent**: Optional, allows you to pass your own React component for the streaming text response to be rendered into. Should accept a `content` prop, which will be a Vercel AI [StreamableValue](https://sdk.vercel.ai/docs/ai-sdk-rsc/streaming-values#createstreamablevalue) that can be consumed using [readStreamableValue](https://sdk.vercel.ai/docs/reference/ai-sdk-rsc/read-streamable-value).
+- **toolComponent**: Optional, allows you to pass your own React component to wrap whatever your tool's `generate` function outputs.
 
 `streamMulti` will hopefully go away once this is natively supported inside the Vercel AI SDK. I have kept its API as close as possible to the existing [streamText](https://sdk.vercel.ai/docs/ai-sdk-core/generating-text#streamtext) and [streamUI](https://sdk.vercel.ai/docs/ai-sdk-rsc/streaming-react-components#using-streamui-with-nextjs) functions, so that it should be easy to migrate your code back to vanilla Vercel AI SDK by swapping out `streamMulti` for whichever function(s) start to support this in Vercel AI SDK.
 
@@ -116,24 +119,18 @@ export async function submitUserMessage(message: ClientMessage) {
       aiState.done(aiState.get());
     },
     tools: {
+      //let the LLM render a table for Firewalls for a given filter configuration
       firewallTable: {
         description: `Display a table of firewall devices, with optional filtering and display configuration.
           The data will be fetched by the component, you just need to provide the configuration per the user's request.`,
         parameters: z.object({
           location: z.string().optional().describe("The location to fetch the firewall devices from"),
           name: z.string().describe("A meaningful name for the table."),
-          title: z
-            .string()
-            .optional()
-            .describe("A meaningful UI title for the table. This will be shown to the user as a heading"),
-          description: z
-            .string()
-            .optional()
-            .describe("A description of the table, which will be rendered and shown to the user"),
         }),
         generate: async function* (config: any) {
           console.log("generating firewall table");
 
+          //render your component here with whatever params the LLM passed, plus whatever you want
           return <MyComponent {...config} />;
         },
       },

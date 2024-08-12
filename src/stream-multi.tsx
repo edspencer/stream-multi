@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Message } from "./Message";
+import { Message, ToolMessage } from "./Message";
 
 import { streamText, CoreTool, StreamTextResult } from "ai";
 import { createStreamableUI, createStreamableValue, StreamableValue } from "ai/rsc";
@@ -39,6 +39,7 @@ export type StreamMultiParams<TOOLS extends Record<string, CoreTool>> = StreamTe
   onSegment?: (segment: Segment) => void;
   initial?: ReactNode;
   textComponent?: (params: TextComponentParams) => ReactNode;
+  toolComponent?: (params: { children: ReactNode }) => ReactNode;
 };
 
 //this isn't exported by Vercel AI SDK unfortunately, so we have to inline it here
@@ -145,6 +146,7 @@ export async function streamMulti<TOOLS extends Record<string, CoreTool>>(
 
   //the React component that is used to show text responses. Can be customized or use Message as default
   const TextComponent = params.textComponent || Message;
+  const ToolComponent = params.toolComponent || ToolMessage;
 
   //called whenever a text chunk is received. Will create a new segment if we're not already in a text segment
   function streamTextSegment(value: any) {
@@ -171,9 +173,7 @@ export async function streamMulti<TOOLS extends Record<string, CoreTool>>(
   //a tool was called, render and return it
   function streamToolSegment(value: any) {
     const toolUi = createStreamableUI();
-    appendUI(<div className="tool mt-4">{toolUi.value}</div>);
-
-    // toolUi.done(<div>{JSON.stringify(value, null, 4)}</div>);
+    appendUI(<ToolComponent>{toolUi.value}</ToolComponent>);
 
     //find tool
     const tool = tools?.[value.toolName];
