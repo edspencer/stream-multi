@@ -1,5 +1,11 @@
 # ai-stream-multi
 
+## 0.2.0
+
+### Minor Changes
+
+- 3ba67cc: Add support for toolComponent
+
 ## 0.1.2
 
 ### Patch Changes
